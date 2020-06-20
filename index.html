@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1>ToDoリスト</h1>
+        <form name="form3">
+            <input type="radio" v-model="checkOn" value="all" name="btn" checked> <span>すべて</span>
+            <input type="radio" v-model="checkOn" value="workking" name="btn"> <span>作業中</span>
+            <input type="radio" v-model="checkOn" value="complete" name="btn"> <span>完了</span>
+        </form>
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>コメント</th>
+                        <th>状態</th>
+                        <th></th>
+                    </tr>
+                    <template v-if="checkOn === 'all'">
+                        <tr v-for="(item,index) in taskList">
+                            <td>{{item.id}}</td>
+                            <td >{{item.comment}}</td>
+                            <td v-if="item.state === 0"><button @click="workEnd(index)">作業中</button></td>
+                            <td v-else="item.state === 1"><button @click="workStart(index)">完了</button></td>
+                            <td><button @click="removeTask(index)">削除</button></td>
+                        </tr>
+                    </template>
+                    <template  v-else-if="checkOn === 'workking'">
+                        <tr v-if="item.state === 0" v-for="(item,index) in taskList">
+                            <td>{{item.id}}</td>
+                            <td >{{item.comment}}</td>
+                            <td v-if="item.state === 0"><button @click="workEnd(index)">作業中</button></td>
+                            <td v-else="item.state === 1"><button @click="workStart(index)">完了</button></td>
+                            <td><button @click="removeTask(index)">削除</button></td>
+                        </tr>
+                    </template>
+                    <template  v-else-if="checkOn === 'complete'">
+                        <tr v-if="item.state === 1" v-for="(item,index) in taskList">
+                            <td>{{item.id}}</td>
+                            <td >{{item.comment}}</td>
+                            <td v-if="item.state === 0"><button @click="workEnd(index)">作業中</button></td>
+                            <td v-else="item.state === 1"><button @click="workStart(index)">完了</button></td>
+                            <td><button @click="removeTask(index)">削除</button></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <h2>新規タスクの追加</h2>
+        <div>
+            <div>
+                <input @keyup.enter="addTaskEnter" v-model="newTask" id="task" type="text" style="width: 190px;">
+                <button  @click="addTask" id="addbtn">追加</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
